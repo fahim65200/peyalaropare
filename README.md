@@ -1,32 +1,36 @@
 # Peyalar Opare website
 
-Bilingual (English / Bangla) static site for GitHub Pages.
+Bilingual (বাংলা / English) site for GitHub Pages. Opens in Bangla by default.
 
-## Files
-- `index.html` : all page content (every text has an English and a Bangla span)
-- `style.css` : design
-- `script.js` : language switch, donation amount, menu
-- `config.js` : **edit this** for payment links, wallet numbers, bank, email, socials
-- `CNAME` : custom domain (peyalaropare.com)
-- `assets/` : add `logo.png`, `hero.jpg` (optional), `bkash-qr.png` (optional)
+## What to upload to GitHub
+Upload everything EXCEPT the `for-later` folder:
+`index.html`, `style.css`, `script.js`, `config.js`, `README.md`, `assets/`, `apps-script/`
 
-## Publish on GitHub Pages
-1. Create a repo (e.g. `peyalaropare-site`), upload all files and the `assets` folder.
-2. Settings > Pages > Source: `main` branch, `/ (root)`.
-3. At your domain registrar, add DNS:
-   - A records for `@`: 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153
-   - CNAME for `www`: `<your-github-username>.github.io`
-   (Check GitHub Pages docs for the current IPs.)
-4. Back in Settings > Pages, enter `peyalaropare.com` and tick "Enforce HTTPS".
+## Everyday edits: only `config.js`
+| What | Setting |
+|---|---|
+| Film (YouTube link or `assets/film.mp4`) | `heroVideo`, `films` |
+| Money raised (if no Google Sheet) | `raised`, `donors`, `goal` |
+| Public ledger | `ledgerCsvUrl` |
+| Spending chart | `spending` |
+| Calculator prices | `impactItems`, then `costsConfirmed: true` |
+| Timeline progress | `timeline` ("done", "now", "next") |
+| Partner names | `partners` |
+| Forms | `formEndpoint` |
 
-## Editing text
-Find the sentence in `index.html`; change the `<span lang="en">` and `<span lang="bn">` versions.
+## Public ledger (Google Sheet)
+1. New Google Sheet. Row 1: `Date | Amount | Method | Ref | Note`
+2. One row per gift. `Ref` = last 3 digits of TrxID only. Never donor phone numbers or names unless they agree.
+3. File > Share > Publish to web > pick the sheet > Comma-separated values (.csv) > Publish.
+4. Paste the link into `ledgerCsvUrl`. The progress bar and donor count then update automatically.
 
-## Turning on payments
-Fill `gatewayUrl`, `wallets`, `bank`, `reportFormUrl` in `config.js`. Empty values stay hidden.
+## Forms (volunteer, donation confirmation, partners)
+Follow the steps at the top of `apps-script/Code.gs`. Until then, forms open the visitor's email app.
 
 ## Payment logos
-Download the official logos and save them as:
-- `assets/bkash-logo.png` (bKash brand/press page)
-- `assets/ebl-logo.png` (Eastern Bank website)
-If a file is missing, the site simply hides that logo.
+Save official logos as `assets/bkash-logo.png` and `assets/ebl-logo.png`. Without them, the names show as text.
+
+## After buying peyalaropare.com
+1. Upload `for-later/CNAME` to the main folder of the repo.
+2. DNS: four A records for `@` (185.199.108.153, .109.153, .110.153, .111.153) and CNAME `www` → `<username>.github.io`. Check GitHub Pages docs for current IPs.
+3. Settings > Pages > Custom domain: `peyalaropare.com`, then Enforce HTTPS.
