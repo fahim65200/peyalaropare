@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
 
@@ -94,12 +94,12 @@
 <!-- ================= STORY ================= -->
 <section class="story" id="story">
   <div class="story-sky" id="storySky" data-step="0" aria-hidden="true">
-    <div class="clock"><span id="clockTime">৫:০০</span><small id="clockPart"></small></div>
-    <svg class="sky-hills" viewBox="0 0 400 200" preserveAspectRatio="none">
-      <path d="M0 120 C80 90 140 100 200 115 S320 80 400 100 V200 H0Z" fill="currentColor" opacity=".55"/>
-      <path d="M0 160 C90 130 170 150 240 155 S350 135 400 145 V200 H0Z" fill="currentColor"/>
-    </svg>
-    <div class="sun"></div>
+    <img class="shot on" src="assets/story-dawn.jpg" alt="" data-step="0">
+    <img class="shot" src="assets/story-hands.jpg" alt="" data-step="1" loading="lazy">
+    <img class="shot" src="assets/story-noon.jpg" alt="" data-step="2" loading="lazy">
+    <img class="shot" src="assets/story-night.jpg" alt="" data-step="3" loading="lazy">
+    <div class="clock"><span id="clockTime">ভোর ৫:০০</span><small id="clockPart" hidden></small></div>
+    <p class="shot-note"><span lang="en">Illustrative images</span><span lang="bn">দৃশ্যগুলো প্রতীকী</span></p>
   </div>
   <div class="story-steps">
     <h2 class="sec-title"><span lang="en">A winter day beyond the cup</span><span lang="bn">পেয়ালার ওপারে একটি শীতের দিন</span></h2>
@@ -479,7 +479,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="config.js?v=5"></script>
-<script src="script.js?v=5"></script>
+<script src="config.js?v=6"></script>
+<script src="script.js?v=6"></script>
 </body>
 </html>

@@ -192,6 +192,7 @@
         cur = +e.target.dataset.step;
         steps.forEach(s => s.classList.toggle("active", s === e.target));
         sky.dataset.step = cur;
+        $$(".shot", sky).forEach(im => im.classList.toggle("on", +im.dataset.step === cur));
         paint();
       });
     }, { rootMargin: "-45% 0px -45% 0px" });
