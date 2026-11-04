@@ -82,7 +82,7 @@
 
   /* =============== hero: worker video, then garden video, on a loop =============== */
   (function heroVideos() {
-    const vids = [$("#hv1"), $("#hv2")].filter(Boolean);
+    const vids = $$(".hero-media .hv");
     if (!vids.length) return;
     if (reduced) { vids[0].classList.add("on"); return; }
     let cur = 0;
