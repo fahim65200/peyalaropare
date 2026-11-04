@@ -13,9 +13,24 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
+
+<!-- ================= INTRO (logo animation) ================= -->
+<div class="intro" id="intro" aria-hidden="true">
+  <video id="introVideo" src="assets/intro-logo.mp4" muted playsinline preload="auto"></video>
+  <button type="button" class="intro-skip" id="introSkip"><span lang="en">Skip</span><span lang="bn">এড়িয়ে যান</span></button>
+</div>
+<script>
+  /* decide before first paint whether to show the intro (once per browser session) */
+  (function () {
+    var show = true;
+    try { show = !sessionStorage.getItem("introSeen"); } catch (e) {}
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) show = false;
+    document.documentElement.classList.add(show ? "intro-on" : "intro-off");
+  })();
+</script>
 
 <a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="bn">মূল অংশে যান</span></a>
 
@@ -45,73 +60,10 @@
 
 <!-- ================= HERO ================= -->
 <section class="hero" id="top">
-  <canvas class="frost" id="frost" aria-hidden="true"></canvas>
-  <svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">
-    <defs>
-      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#0f1e1a"/>
-        <stop offset=".55" stop-color="#21403a"/>
-        <stop offset=".85" stop-color="#4f7470"/>
-        <stop offset="1" stop-color="#8a9c86"/>
-      </linearGradient>
-      <radialGradient id="dawn" cx=".72" cy=".62" r=".45">
-        <stop offset="0" stop-color="#e3a14a" stop-opacity=".38"/>
-        <stop offset="1" stop-color="#e3a14a" stop-opacity="0"/>
-      </radialGradient>
-      <pattern id="rows" width="46" height="22" patternUnits="userSpaceOnUse" patternTransform="rotate(-4)">
-        <path d="M-4 15 q8-10 16 0 t16 0 t16 0 t16 0" fill="none" stroke="#1a3426" stroke-width="7" stroke-linecap="round"/>
-      </pattern>
-      <pattern id="rows2" width="60" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(3)">
-        <path d="M-6 19 q11-13 22 0 t22 0 t22 0 t22 0" fill="none" stroke="#2a4a33" stroke-width="10" stroke-linecap="round"/>
-      </pattern>
-      <filter id="blur" x="-30%" y="-300%" width="160%" height="700%"><feGaussianBlur stdDeviation="18"/></filter>
-      <filter id="soft" x="-50%" y="-20%" width="200%" height="140%"><feGaussianBlur stdDeviation="4"/></filter>
-    </defs>
-
-    <rect width="1600" height="900" fill="url(#sky)"/>
-    <rect width="1600" height="900" fill="url(#dawn)"/>
-
-    <!-- far ridge -->
-    <path d="M0 520 C180 460 300 470 430 430 S700 360 860 410 1120 470 1260 420 1480 380 1600 420 V900 H0Z" fill="#33524b" opacity=".75"/>
-    <g class="mist m1"><ellipse cx="500" cy="470" rx="520" ry="34" fill="#cfdcd6" opacity=".22" filter="url(#blur)"/></g>
-
-    <!-- middle hill with tea rows -->
-    <path id="hillMid" d="M0 610 C160 540 330 520 520 560 S860 640 1040 580 1340 500 1600 560 V900 H0Z" fill="#284634"/>
-    <path d="M0 610 C160 540 330 520 520 560 S860 640 1040 580 1340 500 1600 560 V900 H0Z" fill="url(#rows)" opacity=".85"/>
-    <g class="mist m2"><ellipse cx="1100" cy="590" rx="600" ry="40" fill="#dfe8e4" opacity=".2" filter="url(#blur)"/></g>
-
-    <!-- shade trees -->
-    <g fill="#1d3527" opacity=".9">
-      <path d="M300 548 v-60" stroke="#1d3527" stroke-width="4"/><ellipse cx="300" cy="480" rx="46" ry="14"/><ellipse cx="300" cy="468" rx="30" ry="10"/>
-      <path d="M760 600 v-70" stroke="#1d3527" stroke-width="4"/><ellipse cx="760" cy="522" rx="56" ry="15"/><ellipse cx="760" cy="508" rx="34" ry="10"/>
-      <path d="M1290 534 v-58" stroke="#1d3527" stroke-width="4"/><ellipse cx="1290" cy="470" rx="44" ry="13"/>
-    </g>
-
-    <!-- pluckers, small and far -->
-    <g class="pluckers" fill="#132a1f">
-      <g transform="translate(610 575)"><circle cx="0" cy="-30" r="5"/><path d="M-6 -24 h12 l3 24 h-18z"/><path d="M4 -28 q12 -2 14 10 h-14z" opacity=".9"/></g>
-      <g transform="translate(905 610)"><circle cx="0" cy="-28" r="4.5"/><path d="M-5 -23 h10 l3 22 h-16z"/><path d="M3 -26 q11 -2 13 9 h-13z" opacity=".9"/></g>
-    </g>
-
-    <!-- near hill -->
-    <path d="M0 760 C220 690 420 690 640 730 S1000 800 1220 740 1460 690 1600 710 V900 H0Z" fill="#1b3326"/>
-    <path d="M0 760 C220 690 420 690 640 730 S1000 800 1220 740 1460 690 1600 710 V900 H0Z" fill="url(#rows2)" opacity=".9"/>
-    <g class="mist m3"><ellipse cx="400" cy="760" rx="700" ry="50" fill="#e6eeea" opacity=".16" filter="url(#blur)"/></g>
-
-    <!-- the cup: the only warm object -->
-    <g class="cup" transform="translate(1180 760)">
-      <ellipse cx="60" cy="40" rx="220" ry="120" fill="#e3a14a" opacity=".22" filter="url(#blur)"/>
-      <g class="steam" fill="none" stroke="#f3d9b0" stroke-linecap="round" stroke-width="5" filter="url(#soft)">
-        <path class="s1" d="M30 -20 C10 -70 60 -100 35 -160 S50 -250 20 -310"/>
-        <path class="s2" d="M62 -20 C82 -80 40 -120 70 -180 S50 -270 85 -340"/>
-        <path class="s3" d="M94 -20 C80 -60 120 -110 100 -160 S120 -230 105 -290"/>
-      </g>
-      <ellipse cx="62" cy="58" rx="120" ry="16" fill="#0e1d16"/>
-      <path d="M-18 -6 h160 c0 52 -30 66 -80 66 s-80 -14 -80 -66z" fill="#f1ece2"/>
-      <ellipse cx="62" cy="-6" rx="80" ry="12" fill="#b9762c"/>
-      <path d="M142 6 c34 -6 36 34 2 34" fill="none" stroke="#f1ece2" stroke-width="9"/>
-    </g>
-  </svg>
+  <div class="hero-media" aria-hidden="true">
+    <video class="hv on" id="hv1" src="assets/hero-worker.mp4" poster="assets/hero-worker.jpg" muted playsinline preload="auto"></video>
+    <video class="hv" id="hv2" src="assets/hero-garden.mp4" poster="assets/hero-garden.jpg" muted playsinline preload="auto"></video>
+  </div>
 
   <div class="hero-copy">
     <img class="hero-logo" src="assets/logo.png" alt="পেয়ালার ওপারে লোগো" width="120" height="120">
@@ -525,7 +477,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="config.js?v=3"></script>
-<script src="script.js?v=3"></script>
+<script src="config.js?v=4"></script>
+<script src="script.js?v=4"></script>
 </body>
 </html>

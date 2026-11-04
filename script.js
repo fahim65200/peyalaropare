@@ -57,44 +57,57 @@
       .map(w => `<span class="w" style="animation-delay:${0.5 + 0.22 * i++}s">${w}</span>`).join(" ")
   ).join("");
 
-  /* =============== hero: frost particles =============== */
-  (function frost() {
-    const c = $("#frost");
-    if (!c || reduced) return;
-    const ctx = c.getContext("2d");
-    let w, h, parts = [];
-    const resize = () => {
-      w = c.width = c.offsetWidth * devicePixelRatio;
-      h = c.height = c.offsetHeight * devicePixelRatio;
-      const n = Math.min(90, Math.round(c.offsetWidth / 16));
-      parts = Array.from({ length: n }, () => ({
-        x: Math.random() * w, y: Math.random() * h,
-        r: (Math.random() * 1.6 + .4) * devicePixelRatio,
-        vx: (Math.random() * .3 + .05) * devicePixelRatio,
-        vy: (Math.random() * .25 + .08) * devicePixelRatio,
-        a: Math.random() * .5 + .15, p: Math.random() * 6.28
-      }));
+  /* =============== intro: logo animation =============== */
+  (function intro() {
+    const box = $("#intro"), v = $("#introVideo");
+    const startHero = () => { root.classList.remove("intro-on"); root.classList.add("intro-off"); };
+    if (!root.classList.contains("intro-on") || !box) { startHero(); return; }
+    let finished = false;
+    const end = () => {
+      if (finished) return;
+      finished = true;
+      try { sessionStorage.setItem("introSeen", "1"); } catch (e) {}
+      box.classList.add("done");
+      startHero();
+      setTimeout(() => box.remove(), 1000);
     };
-    resize();
-    addEventListener("resize", resize);
-    let visible = true;
-    new IntersectionObserver(e => { visible = e[0].isIntersecting; }).observe(c);
-    (function loop(t) {
-      if (visible) {
-        ctx.clearRect(0, 0, w, h);
-        for (const p of parts) {
-          p.x += p.vx + Math.sin(t / 1800 + p.p) * .25;
-          p.y += p.vy;
-          if (p.y > h) { p.y = -5; p.x = Math.random() * w; }
-          if (p.x > w) p.x = 0;
-          ctx.beginPath();
-          ctx.fillStyle = `rgba(230,240,236,${p.a})`;
-          ctx.arc(p.x, p.y, p.r, 0, 6.283);
-          ctx.fill();
+    v.addEventListener("ended", () => setTimeout(end, 500));
+    v.addEventListener("error", end);
+    $("#introSkip").addEventListener("click", end);
+    addEventListener("keydown", e => { if (e.key === "Escape") end(); }, { once: true });
+    const p = v.play();
+    if (p && p.catch) p.catch(end);          // autoplay blocked: go straight to the site
+    setTimeout(end, 9000);                    // safety net on slow connections
+  })();
+
+  /* =============== hero: worker video, then garden video, on a loop =============== */
+  (function heroVideos() {
+    const vids = [$("#hv1"), $("#hv2")].filter(Boolean);
+    if (!vids.length) return;
+    if (reduced) { vids[0].classList.add("on"); return; }
+    let cur = 0;
+    const show = k => {
+      vids.forEach((v, n) => v.classList.toggle("on", n === k));
+      const v = vids[k];
+      try { v.currentTime = 0; } catch (e) {}
+      const p = v.play();
+      if (p && p.catch) p.catch(() => {});
+    };
+    vids.forEach((v, n) => {
+      // start the cross-fade a little before the clip ends so there is no black gap
+      v.addEventListener("timeupdate", () => {
+        if (n === cur && v.duration && v.currentTime > v.duration - 1.2) {
+          cur = (cur + 1) % vids.length;
+          show(cur);
         }
-      }
-      requestAnimationFrame(loop);
-    })(0);
+      });
+    });
+    // pause when the hero is off screen to save battery and data
+    new IntersectionObserver(e => {
+      const v = vids[cur];
+      if (e[0].isIntersecting) { const p = v.play(); if (p && p.catch) p.catch(() => {}); } else v.pause();
+    }).observe($(".hero"));
+    show(0);
   })();
 
   /* =============== modals =============== */
