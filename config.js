@@ -15,12 +15,20 @@ window.SITE_CONFIG = {
   },
 
   /* ---------- Video ----------
-     Paste a YouTube link OR a file path like "assets/film.mp4".
-     When heroVideo is set, it opens automatically on a visitor's first visit. */
-  heroVideo: "",
-  autoPopupVideo: true,
+     heroVideo: the film that plays from the "Watch our film" button.
+     autoPopupVideo: true = film opens by itself on a visitor's first visit. */
+  heroVideo: "assets/film.mp4",
+  autoPopupVideo: false,
   films: [
-    // { en: "Film title", bn: "ফিল্মের নাম", video: "https://youtu.be/XXXX" }
+    {
+      video: "assets/film.mp4",
+      poster: "assets/film-poster.jpg",
+      en: "Watch: Peyalar Opare", bn: "দেখুন: পেয়ালার ওপারে",
+      caption: {
+        bn: "এবারের শীতে উষ্ণতা পৌঁছাক তাদের ঘরেও যারা অনবরত প্রশ্রান্তি জোগায় আমাদের। চলুন যাই পেয়ালার ওপারে-",
+        en: "This winter, let warmth reach the homes of those who bring us comfort every day. Come, let's go beyond the cup."
+      }
+    }
   ],
 
   /* ---------- Donations ----------

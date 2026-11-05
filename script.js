@@ -147,10 +147,14 @@
       g.innerHTML = `<div class="film placeholder"><p>${L("Our first film arrives soon", "আমাদের প্রথম ফিল্ম আসছে শীঘ্রই")}<small>${L("Stories from the gardens, told with consent.", "বাগানের গল্প, সম্মতি নিয়েই বলা।")}</small></p></div>`;
       return;
     }
+    g.classList.toggle("single", films.length === 1);
+    const play = '<i><svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="#13241f"/></svg></i>';
     g.innerHTML = films.map((f, k) => {
       const id = ytId(f.video);
-      const thumb = id ? `<img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy">` : "";
-      return `<button class="film" type="button" data-k="${k}">${thumb}<span class="play"><i><svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="#13241f"/></svg></i>${L(f.en, f.bn)}</span></button>`;
+      const src = f.poster || (id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : "");
+      const thumb = src ? `<img src="${src}" alt="" loading="lazy">` : "";
+      const cap = f.caption ? `<figcaption class="film-caption">${L(f.caption.en || f.caption.bn, f.caption.bn || f.caption.en)}</figcaption>` : "";
+      return `<figure class="film-item"><button class="film" type="button" data-k="${k}">${thumb}<span class="play">${play}${L(f.en, f.bn)}</span></button>${cap}</figure>`;
     }).join("");
     $$(".film[data-k]", g).forEach(b => b.addEventListener("click", () => playVideo(films[b.dataset.k].video)));
   }
@@ -658,7 +662,7 @@
       a.click();
       setTimeout(() => URL.revokeObjectURL(a.href), 2000);
       $("#rfHonour").value = $("#cfName").value.trim();
-      toast(L("Card saved. Now send your gift below.", "কার্ড সেভ হয়েছে। এবার নিচে দান পাঠান।"));
+      toast(L("Card saved. Now send your gift.", "কার্ড সেভ হয়েছে। এবার উপহার পাঠান।"));
     } catch (e) { toast(L("Download works once the site is online.", "সাইট অনলাইনে গেলে ডাউনলোড কাজ করবে।")); }
   });
   $("#cfShare").addEventListener("click", async () => {
