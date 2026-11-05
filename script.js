@@ -27,6 +27,8 @@
   root.setAttribute("lang", savedLang || "bn");
   $("#langToggle").addEventListener("click", () => setLang(lang() === "en" ? "bn" : "en"));
 
+  const escHtml = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
   /* =============== toast =============== */
   let toastTimer;
   function toast(msg) {
@@ -184,6 +186,69 @@
     steps.forEach(s => io.observe(s));
     steps[0].classList.add("active");
     paint(); rerenders.push(paint);
+  })();
+
+  /* =============== news from beyond the cup =============== */
+  (function news() {
+    const board = $("#newsBoard"), voicesEl = $("#voices");
+    if (!board) return;
+    const items = cfg.news || [], voices = cfg.voices || [];
+    let filter = "all";
+    const tagName = { winter: ["Winter", "শীত"], wages: ["Wages", "মজুরি"], women: ["Women", "নারী"] };
+    // a torn paper edge, the same every time for a given card
+    const torn = seed => {
+      let x = seed * 9301 + 49297;
+      const rnd = () => ((x = (x * 9301 + 49297) % 233280) / 233280);
+      const top = [], bot = [];
+      for (let p = 0; p <= 100; p += 4) top.push(`${p}% ${(rnd() * 2.2).toFixed(2)}%`);
+      for (let p = 100; p >= 0; p -= 4) bot.push(`${p}% ${(97.8 + rnd() * 2.2).toFixed(2)}%`);
+      return `polygon(${top.join(",")},${bot.join(",")})`;
+    };
+    const ext = '<svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3H3v10h10v-3M9 2h5v5M14 2 7 9" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+    function render() {
+      const lang2 = lang();
+      board.innerHTML = items.map((n, k) => {
+        if (filter !== "all" && n.tag !== filter) return "";
+        const translated = n.orig && n.orig !== lang2;
+        const labels = [L(...tagName[n.tag] || ["", ""])];
+        if (n.archive) labels.push(L("Archive", "আর্কাইভ"));
+        if (translated) labels.push(L("Translated", "অনূদিত"));
+        return `<article class="clip" style="--tilt:${[-1.4, 0.9, -0.6, 1.3, -1, 0.5][k % 6]}deg">
+          <span class="tape" aria-hidden="true"></span>
+          <div class="paper" style="clip-path:${torn(k + 3)}">
+            <header class="clip-top"><b>${escHtml(L(n.outlet.en, n.outlet.bn))}</b><time>${escHtml(L(n.date.en, n.date.bn))}</time></header>
+            <p class="clip-tags">${labels.map(t => `<span>${escHtml(t)}</span>`).join("")}</p>
+            <h3 class="clip-head">${escHtml(L(n.head.en, n.head.bn))}</h3>
+            ${n.quote ? `<p class="clip-quote">${escHtml(L(n.quote.en, n.quote.bn))}</p>` : ""}
+            <p class="clip-sum">${escHtml(L(n.sum.en, n.sum.bn))}</p>
+            <a class="clip-link" href="${escHtml(n.url)}" target="_blank" rel="noopener">${L("Read the original report", "মূল প্রতিবেদন পড়ুন")} ${ext}</a>
+          </div>
+        </article>`;
+      }).join("");
+      const mmss = t => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`;
+      voicesEl.innerHTML = voices.map(v => {
+        const chips = (v.moments || []).map(m => {
+          const label = `<b>${mmss(m.t)}</b> ${escHtml(L(m.en, m.bn))}`;
+          return v.search ? `<span class="moment">${label}</span>`
+            : `<a class="moment" href="${escHtml(v.url)}&t=${m.t}s" target="_blank" rel="noopener">${label}</a>`;
+        }).join("");
+        return `<article class="voice">
+          <span class="voice-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></span>
+          <div>
+            <h4>${escHtml(v.title)}${v.archive ? ` <small>${L("Archive", "আর্কাইভ")}</small>` : ""}</h4>
+            <p class="voice-ch">${escHtml(v.channel)}</p>
+            <div class="moments">${chips}</div>
+          </div>
+          <a class="btn btn-line voice-go" href="${escHtml(v.url)}" target="_blank" rel="noopener">${v.search ? L("Search on YouTube", "ইউটিউবে খুঁজুন") : L("Watch on YouTube", "ইউটিউবে দেখুন")}</a>
+        </article>`;
+      }).join("");
+    }
+    $$("#newsFilter button").forEach(b => b.addEventListener("click", () => {
+      filter = b.dataset.f;
+      $$("#newsFilter button").forEach(x => x.classList.toggle("on", x === b));
+      render();
+    }));
+    render(); rerenders.push(render);
   })();
 
   /* =============== live cold map =============== */

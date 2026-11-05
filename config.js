@@ -31,6 +31,59 @@ window.SITE_CONFIG = {
     }
   ],
 
+
+  /* ---------- News from beyond the cup ----------
+     One entry per report. tag: "winter", "wages" or "women".
+     orig: which language the headline was originally published in ("en" or "bn");
+     the other language is marked as a translation on the site.
+     archive: true for older reports (shown with an "Archive" label). */
+  news: [
+    { tag: "wages", orig: "bn", outlet: { en: "Shomoyer Alo", bn: "সময়ের আলো" }, date: { en: "9 Oct 2026", bn: "৯ অক্টোবর ২০২৬" },
+      head: { en: "A household runs on Tk 178 wages; tea leaves become part of the meal", bn: "১৭৮ টাকা মজুরিতে চলে সংসার, খাবারে চা-পাতার চাটনি" },
+      sum: { en: "Low earnings and household food stress. Wage figures differ between reports; this is the figure reported at the time.", bn: "কম আয় আর সংসারে খাবারের টানাপোড়েন। বিভিন্ন প্রতিবেদনে মজুরির অঙ্ক ভিন্ন; এটি প্রতিবেদনের সময়কার অঙ্ক।" },
+      url: "https://www.shomoyeralo.com/news/388841" },
+    { tag: "wages", orig: "en", outlet: { en: "The Daily Star", bn: "দ্য ডেইলি স্টার" }, date: { en: "17 Aug 2026", bn: "১৭ আগস্ট ২০২৬" },
+      head: { en: "Tea workers intensify protests for Tk 500 daily wage", bn: "দৈনিক ৫০০ টাকা মজুরির দাবিতে চা-শ্রমিকদের আন্দোলন জোরদার" },
+      sum: { en: "Workers renew their demand for a higher daily wage. Tk 500 is the demand, not the current wage.", bn: "উচ্চতর দৈনিক মজুরির দাবিতে শ্রমিকদের আন্দোলন। ৫০০ টাকা দাবি, বর্তমান মজুরি নয়।" },
+      url: "https://www.thedailystar.net/news/bangladesh/news/tea-workers-intensify-protests-tk-500-daily-wage-4249716" },
+    { tag: "women", orig: "bn", outlet: { en: "Ajker Patrika", bn: "আজকের পত্রিকা" }, date: { en: "1 May 2026", bn: "১ মে ২০২৬" },
+      head: { en: "Women tea-garden workers face wage inequality and demand their rights", bn: "চা-বাগানের নারী শ্রমিকেরা মজুরি-বৈষম্যের শিকার, অধিকার বাস্তবায়নের দাবি" },
+      sum: { en: "Women workers in Moulvibazar's gardens on unequal pay, work targets and rights that exist on paper.", bn: "মৌলভীবাজারের বাগানে নারী শ্রমিকদের মজুরি-বৈষম্য, কাজের লক্ষ্যমাত্রা আর অধিকার বাস্তবায়নের দাবি।" },
+      url: "https://www.ajkerpatrika.com/bangladesh/moulvibazar/ajpqiuvzhqcpb" },
+    { tag: "winter", orig: "en", outlet: { en: "bdnews24.com", bn: "বিডিনিউজ২৪" }, date: { en: "8 Jan 2026", bn: "৮ জানুয়ারি ২০২৬" },
+      head: { en: "Temperature drops to 7°C in Sreemangal as winter chill descends", bn: "শ্রীমঙ্গলে তাপমাত্রা নামল ৭ ডিগ্রিতে, জেঁকে বসেছে শীত" },
+      quote: { en: "“Our hands are freezing as we try to pluck tea leaves amid this cold.”", bn: "“এই ঠান্ডায় চা-পাতা তুলতে গিয়ে আমাদের হাত জমে যাচ্ছে।”" },
+      sum: { en: "A Sreemangal tea-garden worker, quoted in the report.", bn: "প্রতিবেদনে উদ্ধৃত শ্রীমঙ্গলের এক চা-শ্রমিক।" },
+      url: "https://bdnews24.com/bangladesh/7e97630fe550" },
+    { tag: "winter", orig: "bn", outlet: { en: "Ajker Patrika", bn: "আজকের পত্রিকা" }, date: { en: "29 Dec 2025", bn: "২৯ ডিসেম্বর ২০২৫" },
+      head: { en: "Tea workers suffer in bone-chilling cold, with no warm clothes to wear", bn: "হাড়কাঁপানো শীতে চা-শ্রমিকদের দুর্ভোগ, পরনে নেই গরম কাপড়" },
+      sum: { en: "Work in the cold without warm clothing, and illness among children and older people. The report also notes some official distribution.", bn: "গরম পোশাক ছাড়া ঠান্ডায় কাজ, শিশু ও বয়স্কদের অসুস্থতা। প্রশাসনের কিছু সহায়তা বিতরণের কথাও প্রতিবেদনে আছে।" },
+      url: "https://www.ajkerpatrika.com/bangladesh/moulvibazar/ajpw1rqy72sso" },
+    { tag: "winter", orig: "en", archive: true, outlet: { en: "The Daily Star", bn: "দ্য ডেইলি স্টার" }, date: { en: "Jan 2023", bn: "জানুয়ারি ২০২৩" },
+      head: { en: "They need warm clothes", bn: "তাদের দরকার গরম কাপড়" },
+      sum: { en: "Families lighting fires for warmth, and cold-related illness among children and older people.", bn: "উষ্ণতার জন্য আগুন জ্বালানো পরিবার, শিশু ও বয়স্কদের শীতজনিত অসুস্থতা।" },
+      url: "https://www.thedailystar.net/news/bangladesh/news/they-need-warm-clothes-3211396" }
+  ],
+
+  /* Videos: link out to the original channel. search: true = link opens a YouTube search, not the exact video. */
+  voices: [
+    { title: "How are the tea workers of Sylhet?", channel: "Hridoy Explore", url: "https://www.youtube.com/watch?v=1W_XL9oFnYU",
+      moments: [
+        { t: 21, en: "Walking the rows with baskets", bn: "ঝুড়ি নিয়ে বাগানের সারিতে" },
+        { t: 57, en: "A worker on work and earnings", bn: "কাজ আর আয় নিয়ে এক শ্রমিক" },
+        { t: 151, en: "Working through every kind of weather", bn: "সব আবহাওয়ায় কাজ" }
+      ] },
+    { title: "Tea Workers: Lives, Struggles and Deprivation", channel: "The Daily Sylheter Dak Multimedia", search: true,
+      url: "https://www.youtube.com/results?search_query=Tea+Workers+Lives+Struggles+Deprivation+The+Daily+Sylheter+Dak+Multimedia",
+      moments: [ { t: 8, en: "A mother on paying for her children's education", bn: "সন্তানের পড়াশোনার খরচ নিয়ে এক মা" } ] },
+    { title: "Life of Workers in a Tea Garden", channel: "Panorama Documentary", search: true,
+      url: "https://www.youtube.com/results?search_query=Life+of+Workers+in+a+Tea+Garden+Panorama+Documentary+tea+workers",
+      moments: [ { t: 4, en: "Hands picking tea leaves", bn: "চা-পাতা তোলা হাত" } ] },
+    { title: "Tea Garden and Tea Workers: Rare Footage 1999–2007", channel: "Panorama Documentary", search: true, archive: true,
+      url: "https://www.youtube.com/results?search_query=Tea+Garden+and+Tea+Workers+Rare+Footage+1999+2007+Panorama+Documentary",
+      moments: [ { t: 9, en: "Archival footage of plucking", bn: "পাতা তোলার পুরোনো দৃশ্য" } ] }
+  ],
+
   /* ---------- Donations ----------
      Wallets and banks appear on the site in the order listed here.
      logo: file in the assets folder. If the file is missing, the name shows as text. */

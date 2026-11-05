@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=8">
+<link rel="stylesheet" href="style.css?v=9">
 </head>
 <body>
 
@@ -27,6 +27,7 @@
   </a>
   <nav class="nav" id="nav" aria-label="Main">
     <a href="#story"><span lang="en">Story</span><span lang="bn">গল্প</span></a>
+    <a href="#news"><span lang="en">News</span><span lang="bn">খবর</span></a>
     <a href="#cold"><span lang="en">Cold map</span><span lang="bn">শীতের মানচিত্র</span></a>
     <a href="#impact"><span lang="en">Your impact</span><span lang="bn">আপনার অবদান</span></a>
     <a href="#ledger"><span lang="en">Transparency</span><span lang="bn">স্বচ্ছতা</span></a>
@@ -107,6 +108,25 @@
       <p><span lang="en">For households without enough warm bedding, the coldest hours are spent at home. Children and older people feel it most.</span><span lang="bn">যেসব পরিবারে পর্যাপ্ত শীতের বিছানাপত্র নেই, তাদের সবচেয়ে কঠিন সময় কাটে ঘরেই। শিশু আর বয়স্করা সবচেয়ে বেশি কষ্ট পান।</span></p>
       <a class="btn btn-ember" href="#impact"><span lang="en">Help keep a family warm</span><span lang="bn">একটি পরিবারকে উষ্ণ রাখুন</span></a>
     </article>
+  </div>
+</section>
+
+<!-- ================= NEWS FROM BEYOND THE CUP ================= -->
+<section class="news" id="news">
+  <div class="wrap">
+    <h2 class="sec-title"><span lang="en">News from beyond the cup</span><span lang="bn">পেয়ালার ওপারের খবর</span></h2>
+    <p class="sec-lead"><span lang="en">What reporters have documented in the tea gardens: the winter cold, wages, and women's rights. Every clipping links to the original report.</span><span lang="bn">চা-বাগানে সাংবাদিকেরা যা তুলে এনেছেন: শীতের কষ্ট, মজুরি আর নারীর অধিকার। প্রতিটি কাটিং মূল প্রতিবেদনের সঙ্গে যুক্ত।</span></p>
+    <div class="news-filter" role="tablist" id="newsFilter">
+      <button type="button" data-f="all" class="on"><span lang="en">All</span><span lang="bn">সব</span></button>
+      <button type="button" data-f="winter"><span lang="en">Winter</span><span lang="bn">শীত</span></button>
+      <button type="button" data-f="wages"><span lang="en">Wages</span><span lang="bn">মজুরি</span></button>
+      <button type="button" data-f="women"><span lang="en">Women</span><span lang="bn">নারী</span></button>
+    </div>
+    <div class="board" id="newsBoard"></div>
+    <p class="news-note"><span lang="en">Summaries are written by Peyalar Opare. Headlines marked "translated" are our translations. Wage figures differ between reports and over time; please read the original report for full context.</span><span lang="bn">সারসংক্ষেপ পেয়ালার ওপারের লেখা। "অনূদিত" চিহ্নিত শিরোনাম আমাদের অনুবাদ। মজুরির অঙ্ক প্রতিবেদন ও সময়ভেদে ভিন্ন; পুরো প্রেক্ষাপট জানতে মূল প্রতিবেদন পড়ুন।</span></p>
+
+    <h3 class="voices-title"><span lang="en">In their own voices</span><span lang="bn">তাঁদের নিজেদের কণ্ঠে</span></h3>
+    <div class="voices" id="voices"></div>
   </div>
 </section>
 
@@ -450,7 +470,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="config.js?v=8"></script>
-<script src="script.js?v=8"></script>
+<script src="config.js?v=9"></script>
+<script src="script.js?v=9"></script>
 </body>
 </html>

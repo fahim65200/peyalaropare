@@ -553,3 +553,61 @@ input[type=range]::-moz-range-thumb { width: 26px; height: 26px; border-radius: 
 .film-item .film::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(10,22,18,.6), transparent 45%); }
 .film-item .film .play { z-index: 1; font-size: 1.05rem; }
 .film-caption { font-family: var(--f-display); font-size: var(--step-1); line-height: 1.6; color: #e9efe6; margin: 18px 0 0; max-width: 60ch; }
+
+/* ================= NEWS FROM BEYOND THE CUP ================= */
+.news {
+  padding: 110px 0; color: var(--mist);
+  background:
+    radial-gradient(80% 60% at 15% 0%, rgba(227,161,74,.08), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 2px, transparent 2px 5px),
+    #172a23;
+}
+.news .sec-lead { color: #b5c6bf; }
+.news-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 34px; }
+.news-filter button { border: 1.5px solid rgba(223,232,228,.3); background: none; color: var(--mist); border-radius: 999px; padding: .4em 1.1em; cursor: pointer; }
+.news-filter button.on { background: var(--mist); color: var(--ink); border-color: var(--mist); }
+.board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 28px; align-items: start; }
+.clip { position: relative; transform: rotate(var(--tilt)); transition: transform .3s ease; filter: drop-shadow(0 10px 16px rgba(0,0,0,.35)); }
+.clip:hover, .clip:focus-within { transform: rotate(0) translateY(-4px); }
+.tape {
+  position: absolute; z-index: 2; top: -12px; left: 50%; width: 92px; height: 26px; margin-left: -46px;
+  background: rgba(226,207,176,.78); transform: rotate(-3deg); box-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+.paper {
+  background: #f1ece1; color: #1d1b17; padding: 30px 24px 26px;
+  background-image: linear-gradient(rgba(0,0,0,.02) 1px, transparent 1px); background-size: 100% 24px;
+}
+.clip-top { display: flex; justify-content: space-between; gap: 10px; font-size: .85rem; border-bottom: 2px solid #1d1b17; padding-bottom: 6px; }
+.clip-top b { font-weight: 600; }
+.clip-top time { color: #5b554b; }
+.clip-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 4px; }
+.clip-tags span { font-size: .74rem; font-weight: 600; color: #8a2f1c; border: 1px solid rgba(138,47,28,.35); border-radius: 3px; padding: 0 6px; }
+.clip-head { font-family: var(--f-display); font-size: 1.4rem; line-height: 1.3; color: #14130f; margin: 6px 0 10px; }
+.clip-quote { font-family: var(--f-display); font-style: italic; font-size: 1.12rem; line-height: 1.5; margin: 0 0 8px; padding-left: 12px; border-left: 3px solid var(--ember); }
+.clip-sum { font-size: .95rem; line-height: 1.6; color: #3d3a33; margin: 0 0 14px; }
+.clip-link { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: .92rem; color: #14130f; text-decoration: none; border-bottom: 1.5px solid var(--ember); padding-bottom: 1px; }
+.clip-link:hover { color: #8a2f1c; }
+.news-note { color: #92a59d; font-size: .88rem; max-width: 72ch; margin: 36px 0 0; }
+
+.voices-title { font-size: var(--step-2); color: #fff; margin: 64px 0 18px; }
+.voices { display: grid; gap: 12px; }
+.voice {
+  display: grid; grid-template-columns: 44px 1fr auto; gap: 16px; align-items: center;
+  border: 1px solid rgba(223,232,228,.12); background: rgba(223,232,228,.03); border-radius: 12px; padding: 16px 20px;
+}
+.voice-icon { width: 44px; height: 44px; border-radius: 50%; background: #c4302b; color: #fff; display: grid; place-items: center; }
+.voice h4 { margin: 0; font-size: 1.05rem; font-weight: 600; color: #fff; }
+.voice h4 small { font-weight: 500; font-size: .75rem; color: var(--frost); border: 1px solid rgba(143,179,194,.4); border-radius: 3px; padding: 0 5px; margin-left: 6px; vertical-align: middle; }
+.voice-ch { margin: 0 0 8px; color: #92a59d; font-size: .9rem; }
+.moments { display: flex; flex-wrap: wrap; gap: 6px; }
+.moment { font-size: .86rem; background: rgba(223,232,228,.07); border-radius: 999px; padding: .2em .8em; color: #c7d4ce; text-decoration: none; }
+a.moment:hover { background: rgba(227,161,74,.18); color: #fff; }
+.moment b { color: var(--ember); font-weight: 600; margin-right: 4px; font-variant-numeric: tabular-nums; }
+.voice-go { white-space: nowrap; }
+
+@media (max-width: 1000px) { .board { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) {
+  .board { grid-template-columns: 1fr; gap: 34px; }
+  .voice { grid-template-columns: 40px 1fr; }
+  .voice-go { grid-column: 1 / -1; justify-self: start; }
+}
