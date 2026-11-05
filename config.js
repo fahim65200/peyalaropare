@@ -23,17 +23,23 @@ window.SITE_CONFIG = {
     // { en: "Film title", bn: "ফিল্মের নাম", video: "https://youtu.be/XXXX" }
   ],
 
-  /* ---------- Donations ---------- */
-  bkash: "01407112246",
-  bkashType: "Personal",          // "Personal" (Send Money) or "Merchant" (Payment)
-  bank: {
-    accountName: "MOHAMMED FAHIM",
-    accountNo: "1361560003738",
-    bankName: "Eastern Bank PLC (EBL)",
-    branch: "Dhanmondi",
-    routing: "095261188"
-  },
-  gatewayUrl: "",                 // card/wallet payment page link, once you have one
+  /* ---------- Donations ----------
+     Wallets and banks appear on the site in the order listed here.
+     logo: file in the assets folder. If the file is missing, the name shows as text. */
+  wallets: [
+    { name: "bKash",  number: "01407112246", logo: "assets/bkash-logo.png",  color: "#e2136e" },
+    { name: "Nagad",  number: "01707288507", logo: "assets/nagad-logo.png",  color: "#f26a21" },
+    { name: "Rocket", number: "01552399877", logo: "assets/rocket-logo.png", color: "#8c3494" }
+  ],
+  banks: [
+    { bankName: "Eastern Bank PLC (EBL)", logo: "assets/ebl-logo.png",
+      accountName: "MOHAMMED FAHIM", accountNo: "1361560003738", branch: "Dhanmondi", routing: "095261188" },
+    { bankName: "BRAC Bank PLC", logo: "assets/brac-logo.png",
+      accountName: "Tasnuva Tabassum Sristi", accountNo: "1072115660001", branch: "New Market", routing: "" },
+    { bankName: "Eastern Bank PLC (EBL)", logo: "assets/ebl-logo.png",
+      accountName: "Mahir Tajwar Rahman", accountNo: "1361440030208", branch: "Dhanmondi", routing: "095261188" }
+  ],
+  gatewayUrl: "",                 // card payment page link, once you have one
 
   /* ---------- Progress bar ----------
      If ledgerCsvUrl is set, "raised" and "donors" are calculated from the sheet.

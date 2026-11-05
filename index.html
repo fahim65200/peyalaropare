@@ -13,24 +13,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
-
-<!-- ================= INTRO (logo animation) ================= -->
-<div class="intro" id="intro" aria-hidden="true">
-  <video id="introVideo" src="assets/intro-logo.mp4" muted playsinline preload="auto"></video>
-  <button type="button" class="intro-skip" id="introSkip"><span lang="en">Skip</span><span lang="bn">এড়িয়ে যান</span></button>
-</div>
-<script>
-  /* decide before first paint whether to show the intro (once per browser session) */
-  (function () {
-    var show = true;
-    try { show = !sessionStorage.getItem("introSeen"); } catch (e) {}
-    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) show = false;
-    document.documentElement.classList.add(show ? "intro-on" : "intro-off");
-  })();
-</script>
 
 <a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="bn">মূল অংশে যান</span></a>
 
@@ -61,10 +46,11 @@
 <!-- ================= HERO ================= -->
 <section class="hero" id="top">
   <div class="hero-media" aria-hidden="true">
-    <video class="hv on" id="hv1" src="assets/hero-worker.mp4" poster="assets/hero-worker.jpg" muted playsinline preload="auto"></video>
-    <video class="hv" id="hv2" src="assets/hero-plucking.mp4" poster="assets/hero-plucking.jpg" muted playsinline preload="auto"></video>
-    <video class="hv" id="hv3" src="assets/hero-walking.mp4" poster="assets/hero-walking.jpg" muted playsinline preload="auto"></video>
-    <video class="hv" id="hv4" src="assets/hero-garden.mp4" poster="assets/hero-garden.jpg" muted playsinline preload="auto"></video>
+    <video class="hv on" src="assets/hero-dawn.mp4" poster="assets/hero-dawn.jpg" muted playsinline preload="auto"></video>
+    <video class="hv" src="assets/hero-hands.mp4" poster="assets/hero-hands.jpg" muted playsinline preload="none"></video>
+    <video class="hv" src="assets/hero-noon.mp4" poster="assets/hero-noon.jpg" muted playsinline preload="none"></video>
+    <video class="hv" src="assets/hero-garden.mp4" poster="assets/hero-garden.jpg" muted playsinline preload="none"></video>
+    <video class="hv" src="assets/hero-night.mp4" poster="assets/hero-night.jpg" muted playsinline preload="none"></video>
   </div>
 
   <div class="hero-copy">
@@ -94,10 +80,10 @@
 <!-- ================= STORY ================= -->
 <section class="story" id="story">
   <div class="story-sky" id="storySky" data-step="0" aria-hidden="true">
-    <img class="shot on" src="assets/story-dawn.jpg" alt="" data-step="0">
-    <img class="shot" src="assets/story-hands.jpg" alt="" data-step="1" loading="lazy">
-    <img class="shot" src="assets/story-noon.jpg" alt="" data-step="2" loading="lazy">
-    <img class="shot" src="assets/story-night.jpg" alt="" data-step="3" loading="lazy">
+    <img class="shot on" src="assets/story-1-chula.jpg" alt="" data-step="0">
+    <img class="shot" src="assets/story-2-fire.jpg" alt="" data-step="1" loading="lazy">
+    <img class="shot" src="assets/story-3-lunch.jpg" alt="" data-step="2" loading="lazy">
+    <img class="shot" src="assets/story-4-blanket.jpg" alt="" data-step="3" loading="lazy">
     <div class="clock"><span id="clockTime">ভোর ৫:০০</span><small id="clockPart" hidden></small></div>
     <p class="shot-note"><span lang="en">Illustrative images</span><span lang="bn">দৃশ্যগুলো প্রতীকী</span></p>
   </div>
@@ -232,47 +218,24 @@
 
     <p class="chosen" id="chosenAmount" hidden></p>
 
-    <div class="pay">
-      <!-- bKash -->
-      <article class="pay-card pay-bkash">
-        <header>
-          <img src="assets/bkash-logo.png" alt="bKash" class="pay-logo" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'pay-word',textContent:'bKash'}))">
-          <span class="pay-kind" id="bkashKind"></span>
-        </header>
-        <div class="copy-row big">
-          <span class="copy-val" id="bkashNo"></span>
-          <button class="copy" type="button" data-copy-from="bkashNo"><span lang="en">Copy</span><span lang="bn">কপি</span></button>
-        </div>
-        <ol class="howto">
-          <li><span lang="en">Open bKash and choose <b id="bkashAction">Send Money</b>.</span><span lang="bn">বিকাশ অ্যাপে <b id="bkashActionBn">সেন্ড মানি</b> বেছে নিন।</span></li>
-          <li><span lang="en">Paste the number and enter your amount.</span><span lang="bn">নম্বরটি পেস্ট করে টাকার পরিমাণ লিখুন।</span></li>
-          <li><span lang="en">Write "Peyalar" in reference, then tell us the transaction ID.</span><span lang="bn">রেফারেন্সে "Peyalar" লিখুন, তারপর ট্রানজেকশন আইডি জানান।</span></li>
-        </ol>
-        <button class="btn btn-line" type="button" data-open="reportModal"><span lang="en">I've sent money, confirm my gift</span><span lang="bn">টাকা পাঠিয়েছি, দান নিশ্চিত করুন</span></button>
-      </article>
+    <h3 class="pay-group"><span lang="en">Mobile wallets</span><span lang="bn">মোবাইল ওয়ালেট</span></h3>
+    <div class="pay pay-wallets" id="wallets"></div>
+    <p class="wallet-how">
+      <span lang="en">Choose <b>Send Money</b>, paste the number, enter your amount and write "Peyalar" in the reference. Then confirm your gift so we can log it.</span>
+      <span lang="bn"><b>সেন্ড মানি</b> বেছে নিন, নম্বর পেস্ট করুন, টাকার পরিমাণ দিন এবং রেফারেন্সে "Peyalar" লিখুন। তারপর দান নিশ্চিত করুন, যাতে আমরা হিসাবে তুলতে পারি।</span>
+    </p>
 
-      <!-- Bank -->
-      <article class="pay-card pay-bank">
-        <header>
-          <img src="assets/ebl-logo.png" alt="Eastern Bank PLC" class="pay-logo" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'pay-word',textContent:'Eastern Bank PLC'}))">
-          <span class="pay-kind"><span lang="en">Bank transfer</span><span lang="bn">ব্যাংক ট্রান্সফার</span></span>
-        </header>
-        <dl class="bank-rows" id="bankRows"></dl>
-        <button class="btn btn-line" type="button" data-copy-all="bank"><span lang="en">Copy all bank details</span><span lang="bn">সব তথ্য কপি করুন</span></button>
-        <button class="btn btn-line" type="button" data-open="reportModal"><span lang="en">Confirm my transfer</span><span lang="bn">ট্রান্সফার নিশ্চিত করুন</span></button>
-      </article>
+    <h3 class="pay-group"><span lang="en">Bank transfer</span><span lang="bn">ব্যাংক ট্রান্সফার</span></h3>
+    <div class="pay pay-banks" id="banks"></div>
 
-      <!-- Gateway (shown only when configured) -->
-      <article class="pay-card pay-gateway" id="gatewayCard" hidden>
-        <header><span class="pay-word"><span lang="en">Card or wallet</span><span lang="bn">কার্ড বা ওয়ালেট</span></span></header>
-        <p><span lang="en">Visa, Mastercard, bKash, Nagad and more on our payment partner's secure page.</span><span lang="bn">ভিসা, মাস্টারকার্ড, বিকাশ, নগদসহ আমাদের পেমেন্ট পার্টনারের নিরাপদ পেজে।</span></p>
-        <a class="btn btn-ember" id="gatewayBtn" href="#" target="_blank" rel="noopener"><span lang="en">Pay securely</span><span lang="bn">নিরাপদে দিন</span></a>
-      </article>
+    <div class="confirm-row">
+      <button class="btn btn-ember" type="button" data-open="reportModal"><span lang="en">I've sent money, confirm my gift</span><span lang="bn">টাকা পাঠিয়েছি, দান নিশ্চিত করুন</span></button>
+      <a class="btn btn-line" id="gatewayBtn" href="#" target="_blank" rel="noopener" hidden><span lang="en">Pay by card</span><span lang="bn">কার্ডে দিন</span></a>
     </div>
 
     <p class="trust">
-      <span lang="en">This season, funds are held in the founder's personal account while our organisation's registration is in progress. Every gift is logged in the public ledger below and recipients' names are never published.</span>
-      <span lang="bn">সংগঠনের নিবন্ধন প্রক্রিয়াধীন থাকায় এই মৌসুমে অর্থ প্রতিষ্ঠাতার ব্যক্তিগত হিসাবে রাখা হচ্ছে। প্রতিটি দান নিচের পাবলিক হিসাবখাতায় তোলা হয় এবং সহায়তাপ্রাপ্তদের নাম কখনো প্রকাশ করা হয় না।</span>
+      <span lang="en">While our organisation's registration is in progress, funds this season are received in the personal accounts of our team members named above. Every gift is logged in the public ledger below and recipients' names are never published.</span>
+      <span lang="bn">সংগঠনের নিবন্ধন প্রক্রিয়াধীন থাকায় এই মৌসুমে অর্থ ওপরে উল্লেখিত আমাদের দলের সদস্যদের ব্যক্তিগত হিসাবে নেওয়া হচ্ছে। প্রতিটি দান নিচের পাবলিক হিসাবখাতায় তোলা হয় এবং সহায়তাপ্রাপ্তদের নাম কখনো প্রকাশ করা হয় না।</span>
     </p>
   </div>
 </section>
@@ -400,6 +363,14 @@
   </div>
 </section>
 
+<!-- ================= CLOSING: logo blooms from the ground ================= -->
+<section class="bloom" id="bloom" aria-label="Peyalar Opare">
+  <div class="bloom-stage">
+    <video id="bloomVideo" src="assets/intro-logo.mp4" muted playsinline preload="none" aria-hidden="true"></video>
+  </div>
+  <p class="bloom-line"><span lang="en">Thank you for walking beyond the cup with us.</span><span lang="bn">পেয়ালার ওপারে আমাদের সঙ্গে থাকার জন্য ধন্যবাদ।</span></p>
+</section>
+
 <!-- ================= CONTACT ================= -->
 <footer class="foot" id="contact">
   <div class="wrap foot-grid">
@@ -439,7 +410,7 @@
       <div class="two">
         <label><span lang="en">Amount (৳)</span><span lang="bn">পরিমাণ (৳)</span><input name="amount" id="rfAmount" type="number" min="1" required></label>
         <label><span lang="en">Method</span><span lang="bn">মাধ্যম</span>
-          <select name="method"><option>bKash</option><option>Bank</option><option>Other</option></select></label>
+          <select name="method"><option>bKash</option><option>Nagad</option><option>Rocket</option><option>Bank</option><option>Other</option></select></label>
       </div>
       <label><span lang="en">Transaction ID or bank reference</span><span lang="bn">ট্রানজেকশন আইডি বা ব্যাংক রেফারেন্স</span><input name="trx" required maxlength="40"></label>
       <label><span lang="en">Your name (optional, never published)</span><span lang="bn">আপনার নাম (ঐচ্ছিক, প্রকাশ করা হবে না)</span><input name="name" maxlength="80"></label>
@@ -479,7 +450,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="config.js?v=6"></script>
-<script src="script.js?v=6"></script>
+<script src="config.js?v=7"></script>
+<script src="script.js?v=7"></script>
 </body>
 </html>

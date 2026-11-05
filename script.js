@@ -57,30 +57,7 @@
       .map(w => `<span class="w" style="animation-delay:${0.5 + 0.22 * i++}s">${w}</span>`).join(" ")
   ).join("");
 
-  /* =============== intro: logo animation =============== */
-  (function intro() {
-    const box = $("#intro"), v = $("#introVideo");
-    const startHero = () => { root.classList.remove("intro-on"); root.classList.add("intro-off"); };
-    if (!root.classList.contains("intro-on") || !box) { startHero(); return; }
-    let finished = false;
-    const end = () => {
-      if (finished) return;
-      finished = true;
-      try { sessionStorage.setItem("introSeen", "1"); } catch (e) {}
-      box.classList.add("done");
-      startHero();
-      setTimeout(() => box.remove(), 1000);
-    };
-    v.addEventListener("ended", () => setTimeout(end, 500));
-    v.addEventListener("error", end);
-    $("#introSkip").addEventListener("click", end);
-    addEventListener("keydown", e => { if (e.key === "Escape") end(); }, { once: true });
-    const p = v.play();
-    if (p && p.catch) p.catch(end);          // autoplay blocked: go straight to the site
-    setTimeout(end, 9000);                    // safety net on slow connections
-  })();
-
-  /* =============== hero: worker video, then garden video, on a loop =============== */
+  /* =============== hero: background clips on a loop =============== */
   (function heroVideos() {
     const vids = $$(".hero-media .hv");
     if (!vids.length) return;
@@ -89,9 +66,13 @@
     const show = k => {
       vids.forEach((v, n) => v.classList.toggle("on", n === k));
       const v = vids[k];
+      if (v.preload !== "auto") { v.preload = "auto"; }
       try { v.currentTime = 0; } catch (e) {}
       const p = v.play();
       if (p && p.catch) p.catch(() => {});
+      // fetch only the next clip in the background, not all of them at once
+      const next = vids[(k + 1) % vids.length];
+      if (next.preload !== "auto") { next.preload = "auto"; next.load(); }
     };
     vids.forEach((v, n) => {
       // start the cross-fade a little before the clip ends so there is no black gap
@@ -406,26 +387,43 @@
   });
   renderImpact(); rerenders.push(() => { prevCount = -1; renderImpact(); });
 
-  /* =============== donate: details + copy =============== */
-  const bank = cfg.bank || {};
-  $("#bkashNo").textContent = cfg.bkash || "";
-  if (!cfg.bkash) $(".pay-bkash").remove();
+  /* =============== donate: wallets + banks + copy =============== */
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const logoTag = (src, name, cls) => src
+    ? `<img src="${esc(src)}" alt="${esc(name)}" class="${cls}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'pay-word',textContent:this.alt}))">`
+    : `<span class="pay-word">${esc(name)}</span>`;
   function renderPay() {
-    const merchant = /merchant/i.test(cfg.bkashType || "");
-    const k = $("#bkashKind");
-    if (k) k.textContent = merchant ? L("Merchant", "মার্চেন্ট") : L("Personal", "পার্সোনাল");
-    const a = $("#bkashAction"), ab = $("#bkashActionBn");
-    if (a) a.textContent = merchant ? "Payment" : "Send Money";
-    if (ab) ab.textContent = merchant ? "পেমেন্ট" : "সেন্ড মানি";
+    const wallets = (cfg.wallets || []).filter(w => w.number);
+    $("#wallets").innerHTML = wallets.map((w, k) => `
+      <article class="pay-card wallet" style="--brand:${esc(w.color || "#8fb3c2")}">
+        <header>${logoTag(w.logo, w.name, "pay-logo")}<span class="pay-kind">${esc(w.name)} · ${L("Personal", "পার্সোনাল")}</span></header>
+        <div class="copy-row big">
+          <span class="copy-val" id="w_${k}">${esc(w.number)}</span>
+          <button class="copy" type="button" data-copy-from="w_${k}">${L("Copy", "কপি")}</button>
+        </div>
+      </article>`).join("");
     const rows = [
       ["accountName", "Account name", "অ্যাকাউন্টের নাম"],
       ["accountNo", "Account no.", "অ্যাকাউন্ট নম্বর"],
       ["bankName", "Bank", "ব্যাংক"],
       ["branch", "Branch", "শাখা"],
       ["routing", "Routing no.", "রাউটিং নম্বর"]
-    ].filter(r => bank[r[0]]);
-    $("#bankRows").innerHTML = rows.map(r => `<div><dt>${L(r[1], r[2])}</dt><dd id="b_${r[0]}">${bank[r[0]]}</dd>
-      <button class="copy" type="button" data-copy-from="b_${r[0]}">${L("Copy", "কপি")}</button></div>`).join("");
+    ];
+    const banks = (cfg.banks || []).filter(b => b.accountNo);
+    $("#banks").innerHTML = banks.map((bk, n) => `
+      <article class="pay-card bank">
+        <header>${logoTag(bk.logo, bk.bankName, "pay-logo")}<span class="pay-kind">${L("Account", "অ্যাকাউন্ট")} ${fmt(n + 1)}</span></header>
+        <dl class="bank-rows">${rows.filter(r => bk[r[0]]).map(r => `<div><dt>${L(r[1], r[2])}</dt>
+          <dd id="b${n}_${r[0]}">${esc(bk[r[0]])}</dd>
+          <button class="copy" type="button" data-copy-from="b${n}_${r[0]}">${L("Copy", "কপি")}</button></div>`).join("")}</dl>
+        <button class="btn btn-line" type="button" data-copy-bank="${n}">${L("Copy all details", "সব তথ্য কপি করুন")}</button>
+      </article>`).join("");
+    $$("[data-copy-bank]").forEach(btn => btn.addEventListener("click", e => {
+      const bk = banks[+btn.dataset.copyBank];
+      const t = [`Account name: ${bk.accountName}`, `Account no: ${bk.accountNo}`, `Bank: ${bk.bankName}`,
+        `Branch: ${bk.branch}`, bk.routing ? `Routing no: ${bk.routing}` : ""].filter(Boolean).join("\n");
+      copyText(t, e.currentTarget);
+    }));
     bindCopy();
   }
   async function copyText(text, btn) {
@@ -449,15 +447,26 @@
       b.addEventListener("click", () => copyText(document.getElementById(b.dataset.copyFrom).textContent.trim(), b));
     });
   }
-  $("[data-copy-all]").addEventListener("click", e => {
-    const t = [
-      `Account name: ${bank.accountName}`, `Account no: ${bank.accountNo}`,
-      `Bank: ${bank.bankName}`, `Branch: ${bank.branch}`, bank.routing ? `Routing no: ${bank.routing}` : ""
-    ].filter(Boolean).join("\n");
-    copyText(t, e.currentTarget);
-  });
   renderPay(); rerenders.push(renderPay);
-  if (cfg.gatewayUrl) { $("#gatewayCard").hidden = false; $("#gatewayBtn").href = cfg.gatewayUrl; }
+  if (cfg.gatewayUrl) { const g = $("#gatewayBtn"); g.hidden = false; g.href = cfg.gatewayUrl; }
+
+  /* =============== closing: logo blooms from the ground =============== */
+  (function bloom() {
+    const sec = $("#bloom"), v = $("#bloomVideo");
+    if (!sec || !v) return;
+    let played = false;
+    new IntersectionObserver(entries => {
+      const e = entries[0];
+      if (e.isIntersecting && !played) {
+        played = true;
+        sec.classList.add("in");
+        v.preload = "auto";
+        if (reduced) { v.addEventListener("loadeddata", () => { try { v.currentTime = v.duration - 0.1; } catch (x) {} }, { once: true }); v.load(); return; }
+        const p = v.play();
+        if (p && p.catch) p.catch(() => {});
+      }
+    }, { threshold: 0.35 }).observe(sec);
+  })();
 
   /* =============== ledger + progress =============== */
   let ledgerRows = [];
@@ -719,6 +728,12 @@
   if (navigator.share) {
     nativeBtn.hidden = false;
     nativeBtn.addEventListener("click", () => navigator.share({ title: "Peyalar Opare", text: shareText(), url: shareUrl() }).catch(() => {}));
+  }
+
+  /* =============== pause looping animations in sections that are off screen =============== */
+  if ("IntersectionObserver" in window) {
+    const idleIO = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle("idle", !e.isIntersecting)), { rootMargin: "100px 0px" });
+    $$("main > section, .hero .ticker").forEach(s => idleIO.observe(s));
   }
 
   /* =============== contact =============== */

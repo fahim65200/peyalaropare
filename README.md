@@ -30,7 +30,7 @@ Follow the steps at the top of `apps-script/Code.gs`. Until then, forms open the
 ## Payment logos
 Save official logos as `assets/bkash-logo.png` and `assets/ebl-logo.png`. Without them, the names show as text.
 
-## After buying peyalaropare.com
+## After buying peyalaropare.org
 1. Upload `for-later/CNAME` to the main folder of the repo.
 2. DNS: four A records for `@` (185.199.108.153, .109.153, .110.153, .111.153) and CNAME `www` → `<username>.github.io`. Check GitHub Pages docs for current IPs.
-3. Settings > Pages > Custom domain: `peyalaropare.com`, then Enforce HTTPS.
+3. Settings > Pages > Custom domain: `peyalaropare.org`, then Enforce HTTPS.
