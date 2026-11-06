@@ -106,8 +106,8 @@ window.SITE_CONFIG = {
      If ledgerCsvUrl is set, "raised" and "donors" are calculated from the sheet.
      Otherwise the numbers below are used. Set goal after the needs assessment. */
   goal: 0,
-  raised: 0,
-  donors: 0,
+  raised: 5000,
+  donors: 1,
 
   /* ---------- Public ledger (Google Sheet) ----------
      Sheet columns (row 1): Date | Amount | Method | Ref | Note
