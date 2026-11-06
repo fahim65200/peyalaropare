@@ -115,6 +115,13 @@ window.SITE_CONFIG = {
      File > Share > Publish to web > choose the sheet > CSV > copy link here. */
   ledgerCsvUrl: "",
 
+  /* ---------- Simple ledger (used when ledgerCsvUrl is empty) ----------
+     Add one line per gift. The total and donor count are calculated from this list.
+     ref = last 3 digits of the Transaction ID only. note = donor name only if they agreed. */
+  ledger: [
+    { date: "2026-11-06", amount: 5000, method: "bKash", ref: "076", note: "First gift. Thank you!" },
+  ],
+
   /* ---------- Partners shown publicly (with their permission) ---------- */
   partners: [
     // "Company name"

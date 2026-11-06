@@ -567,6 +567,10 @@
         ledgerRows = rows.map(r => ({ date: r[0] || "", amount: num(r[1]), method: r[2] || "", ref: (r[3] || "").trim(), note: r[4] || "" }))
           .filter(r => r.amount > 0);
       } catch (e) { ledgerRows = null; }
+    } else if (Array.isArray(cfg.ledger)) {
+      // simple ledger typed straight into config.js
+      ledgerRows = cfg.ledger.map(r => ({ date: r.date || "", amount: num(r.amount), method: r.method || "", ref: String(r.ref || "").trim(), note: r.note || "" }))
+        .filter(r => r.amount > 0);
     }
     renderLedger(); renderProgress();
   }
@@ -593,8 +597,9 @@
   $("#ledgerSearch").addEventListener("input", () => { clearTimeout(searchT); searchT = setTimeout(renderLedger, 350); });
 
   function renderProgress() {
-    const raised = cfg.ledgerCsvUrl && ledgerRows ? ledgerRows.reduce((s, r) => s + r.amount, 0) : (cfg.raised || 0);
-    const donors = cfg.ledgerCsvUrl && ledgerRows ? ledgerRows.length : (cfg.donors || 0);
+    const fromLedger = ledgerRows && ledgerRows.length;
+    const raised = fromLedger ? ledgerRows.reduce((s, r) => s + r.amount, 0) : (cfg.raised || 0);
+    const donors = fromLedger ? ledgerRows.length : (cfg.donors || 0);
     $("#raisedOut").textContent = tk(raised);
     const goal = cfg.goal || 0;
     $("#goalOut").textContent = goal
