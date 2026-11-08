@@ -113,7 +113,7 @@ window.SITE_CONFIG = {
      Sheet columns (row 1): Date | Amount | Method | Ref | Note
      "Ref" = last 3 digits of the Transaction ID. Never put donor phone numbers.
      File > Share > Publish to web > choose the sheet > CSV > copy link here. */
-  ledgerCsvUrl: "",
+  ledgerCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGw8-AcEl3Ya5n_U2ctlo_W3ATaIPkZSM2tOqud_0Cjq9FInu5PKdwrPzNByYsKw8tjKy91g-3G9m0/pub?gid=0&single=true&output=csv",
 
   /* ---------- Simple ledger (used when ledgerCsvUrl is empty) ----------
      Add one line per gift. The total and donor count are calculated from this list.
