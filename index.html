@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=11">
+<link rel="stylesheet" href="style.css?v=13">
 </head>
 <body>
 
@@ -316,7 +316,7 @@
           <h3><span lang="en">Public ledger</span><span lang="bn">পাবলিক হিসাবখাতা</span></h3>
           <label class="search">
             <span class="sr"><span lang="en">Find my gift</span><span lang="bn">আমার দান খুঁজুন</span></span>
-            <input id="ledgerSearch" inputmode="numeric" maxlength="4" placeholder="TrxID: last 3 digits / শেষ ৩ অঙ্ক">
+            <input id="ledgerSearch" inputmode="numeric" maxlength="4" placeholder="Last 3 digits / শেষ ৩ ডিজিট">
           </label>
         </div>
         <div class="table-scroll">
@@ -325,12 +325,13 @@
               <th><span lang="en">Date</span><span lang="bn">তারিখ</span></th>
               <th><span lang="en">Amount</span><span lang="bn">পরিমাণ</span></th>
               <th><span lang="en">Method</span><span lang="bn">মাধ্যম</span></th>
-              <th><span lang="en">Ref.</span><span lang="bn">রেফ.</span></th>
+              <th><span lang="en">Last 3 digits</span><span lang="bn">শেষ ৩ ডিজিট</span></th>
               <th><span lang="en">Note</span><span lang="bn">নোট</span></th>
             </tr></thead>
             <tbody id="ledgerBody"></tbody>
           </table>
         </div>
+        <p class="ledger-help"><span lang="en">"Last 3 digits" are from the mobile number or bank account the gift was sent from.</span><span lang="bn">"শেষ ৩ ডিজিট" হলো যে মোবাইল নম্বর বা ব্যাংক অ্যাকাউন্ট থেকে উপহার পাঠানো হয়েছে, তার শেষ ৩টি সংখ্যা।</span></p>
       </div>
 
       <div class="spend">
@@ -445,7 +446,8 @@
         <label><span lang="en">Method</span><span lang="bn">মাধ্যম</span>
           <select name="method"><option>bKash</option><option>Nagad</option><option>Rocket</option><option>Bank</option><option>Other</option></select></label>
       </div>
-      <label><span lang="en">Transaction ID or bank reference</span><span lang="bn">ট্রানজেকশন আইডি বা ব্যাংক রেফারেন্স</span><input name="trx" required maxlength="40"></label>
+      <label><span lang="en">Last 3 digits of the number or account you sent from</span><span lang="bn">যে নম্বর বা অ্যাকাউন্ট থেকে পাঠিয়েছেন, তার শেষ ৩ ডিজিট</span><input name="last3" required inputmode="numeric" pattern="[0-9]{3}" maxlength="3"></label>
+      <label><span lang="en">Transaction ID (optional)</span><span lang="bn">ট্রানজেকশন আইডি (ঐচ্ছিক)</span><input name="trx" maxlength="40"></label>
       <label><span lang="en">Your name (optional, never published)</span><span lang="bn">আপনার নাম (ঐচ্ছিক, প্রকাশ করা হবে না)</span><input name="name" maxlength="80"></label>
       <label><span lang="en">Phone or email for a thank-you</span><span lang="bn">ধন্যবাদ জানাতে ফোন বা ইমেইল</span><input name="contact" maxlength="80"></label>
       <label><span lang="en">Gift given in honour of (optional)</span><span lang="bn">যাঁর নামে উপহার (ঐচ্ছিক)</span><input name="honour" id="rfHonour" maxlength="60"></label>
@@ -491,8 +493,8 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="config.js?v=11"></script>
-<script src="posts.js?v=11"></script>
-<script src="script.js?v=11"></script>
+<script src="config.js?v=13"></script>
+<script src="posts.js?v=13"></script>
+<script src="script.js?v=13"></script>
 </body>
 </html>

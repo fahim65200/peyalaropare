@@ -636,6 +636,8 @@
     if (cell || row.length) { row.push(cell); rows.push(row); }
     return rows.filter(r => r.some(c => c.trim()));
   }
+  // Google Sheets drops leading zeros (076 becomes 76); add them back
+  const pad3 = v => { const t = String(v == null ? "" : v).trim(); return /^\d{1,2}$/.test(t) ? t.padStart(3, "0") : t; };
   const num = s => parseFloat(String(s).replace(/[^\d.]/g, "")) || 0;
   async function loadLedger() {
     if (cfg.ledgerCsvUrl) {
@@ -643,12 +645,12 @@
         const r = await fetch(cfg.ledgerCsvUrl, { cache: "no-store" });
         const rows = parseCSV(await r.text());
         rows.shift();
-        ledgerRows = rows.map(r => ({ date: r[0] || "", amount: num(r[1]), method: r[2] || "", ref: (r[3] || "").trim(), note: r[4] || "" }))
+        ledgerRows = rows.map(r => ({ date: r[0] || "", amount: num(r[1]), method: r[2] || "", ref: pad3(r[3]), note: r[4] || "" }))
           .filter(r => r.amount > 0);
       } catch (e) { ledgerRows = null; }
     } else if (Array.isArray(cfg.ledger)) {
       // simple ledger typed straight into config.js
-      ledgerRows = cfg.ledger.map(r => ({ date: r.date || "", amount: num(r.amount), method: r.method || "", ref: String(r.ref || "").trim(), note: r.note || "" }))
+      ledgerRows = cfg.ledger.map(r => ({ date: r.date || "", amount: num(r.amount), method: r.method || "", ref: pad3(r.ref), note: r.note || "" }))
         .filter(r => r.amount > 0);
     }
     renderLedger(); renderProgress();
@@ -669,7 +671,7 @@
     if (q.length >= 3) {
       const hit = $("tr.hit", body);
       if (hit) hit.scrollIntoView({ block: "nearest", behavior: "smooth" });
-      else toast(L("Not found yet. New gifts are added within 48 hours.", "এখনো পাওয়া যায়নি। নতুন দান ৪৮ ঘণ্টার মধ্যে যোগ করা হয়।"));
+      else toast(L("Not found yet. New gifts are added within 48 hours.", "এখনো পাওয়া যায়নি। নতুন উপহার ৪৮ ঘণ্টার মধ্যে যোগ করা হয়।"));
     }
   }
   let searchT;

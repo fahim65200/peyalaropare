@@ -656,3 +656,5 @@ a.moment:hover { background: rgba(227,161,74,.18); color: #fff; }
 }
 @media (max-width: 420px) { .post-meta { padding: 12px 12px 14px; } .post-text { -webkit-line-clamp: 2; font-size: .92rem; } }
 .post-box .modal-x { background: rgba(255,255,255,.92); color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+
+.ledger-help { font-size: .88rem; color: var(--muted); margin: 10px 2px 0; }
