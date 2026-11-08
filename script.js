@@ -108,6 +108,7 @@
     m.hidden = true;
     document.body.style.overflow = "";
     if (m.id === "videoModal") $("#videoFrame").innerHTML = "";
+    if (m.id === "postModal") $("#postMedia").innerHTML = "";
     lastFocus && lastFocus.focus();
   }
   $$(".modal").forEach(m => {
@@ -248,6 +249,84 @@
       $$("#newsFilter button").forEach(x => x.classList.toggle("on", x === b));
       render();
     }));
+    render(); rerenders.push(render);
+  })();
+
+  /* =============== posts / updates =============== */
+  (function posts() {
+    const grid = $("#postGrid"), moreBtn = $("#postMore");
+    if (!grid) return;
+    const list = (window.SITE_POSTS || []).filter(p => p && (p.images || p.video));
+    const PAGE = 6;
+    let shown = PAGE;
+    const fmtDate = iso => {
+      const d = new Date(iso + "T00:00:00");
+      if (isNaN(d)) return iso;
+      return d.toLocaleDateString(lang() === "bn" ? "bn-BD" : "en-GB", { day: "numeric", month: "long", year: "numeric" });
+    };
+    const caption = p => (p.text ? L(p.text.en || p.text.bn, p.text.bn || p.text.en) : "");
+    const playIcon = '<svg width="22" height="22" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>';
+    const stackIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="7" y="7" width="13" height="13" rx="2"/><path d="M4 16V5a1 1 0 0 1 1-1h11"/></svg>';
+    function render() {
+      if (!list.length) {
+        grid.innerHTML = `<p class="post-empty">${L("Our first update is on its way.", "আমাদের প্রথম আপডেট আসছে শীঘ্রই।")}</p>`;
+        moreBtn.hidden = true;
+        return;
+      }
+      grid.innerHTML = list.slice(0, shown).map((p, k) => {
+        const cover = p.images ? p.images[0] : (p.poster || "");
+        const badge = p.video ? `<span class="post-badge">${playIcon}</span>`
+          : (p.images.length > 1 ? `<span class="post-badge">${stackIcon}${fmt(p.images.length)}</span>` : "");
+        return `<button class="post-card" type="button" data-k="${k}">
+          <span class="post-thumb">${cover ? `<img src="${escHtml(cover)}" alt="" loading="lazy">` : ""}${badge}</span>
+          <span class="post-meta"><time>${escHtml(fmtDate(p.date))}</time><span class="post-text">${escHtml(caption(p))}</span></span>
+        </button>`;
+      }).join("");
+      moreBtn.hidden = list.length <= shown;
+      $$(".post-card", grid).forEach(b => b.addEventListener("click", () => openPost(+b.dataset.k)));
+    }
+    let cur = null, idx = 0;
+    function paintMedia() {
+      const p = cur, media = $("#postMedia");
+      if (p.video) {
+        media.innerHTML = `<video src="${escHtml(p.video)}" ${p.poster ? `poster="${escHtml(p.poster)}"` : ""} controls autoplay playsinline></video>`;
+        return;
+      }
+      const n = p.images.length;
+      media.innerHTML = `<img src="${escHtml(p.images[idx])}" alt="">` + (n > 1 ? `
+        <button class="post-nav prev" type="button" aria-label="Previous">‹</button>
+        <button class="post-nav next" type="button" aria-label="Next">›</button>
+        <div class="post-dots">${p.images.map((_, i) => `<i class="${i === idx ? "on" : ""}"></i>`).join("")}</div>` : "");
+      if (n > 1) {
+        $(".post-nav.prev", media).addEventListener("click", () => { idx = (idx - 1 + n) % n; paintMedia(); });
+        $(".post-nav.next", media).addEventListener("click", () => { idx = (idx + 1) % n; paintMedia(); });
+      }
+    }
+    function openPost(k) {
+      cur = list[k]; idx = 0;
+      paintMedia();
+      const link = cur.link && cur.link.url
+        ? `<a class="btn btn-line dark" href="${escHtml(cur.link.url)}" target="_blank" rel="noopener">${escHtml(L(cur.link.en || "Open", cur.link.bn || "খুলুন"))}</a>` : "";
+      $("#postBody").innerHTML = `<time>${escHtml(fmtDate(cur.date))}</time><p>${escHtml(caption(cur))}</p>
+        <div class="post-actions">${link}<a class="btn btn-ember" href="#donate">${L("Send warmth", "উষ্ণতা পাঠান")}</a></div>`;
+      $("#postBody .btn-ember").addEventListener("click", () => { const m = $("#postModal"); m.hidden = true; document.body.style.overflow = ""; $("#postMedia").innerHTML = ""; });
+      openModal("postModal");
+    }
+    // swipe and arrow keys inside the viewer
+    let sx = null;
+    $("#postMedia").addEventListener("touchstart", e => { sx = e.touches[0].clientX; }, { passive: true });
+    $("#postMedia").addEventListener("touchend", e => {
+      if (sx === null || !cur || !cur.images || cur.images.length < 2) return;
+      const dx = e.changedTouches[0].clientX - sx; sx = null;
+      if (Math.abs(dx) > 40) { const n = cur.images.length; idx = (idx + (dx < 0 ? 1 : -1) + n) % n; paintMedia(); }
+    });
+    addEventListener("keydown", e => {
+      if ($("#postModal").hidden || !cur || !cur.images || cur.images.length < 2) return;
+      const n = cur.images.length;
+      if (e.key === "ArrowRight") { idx = (idx + 1) % n; paintMedia(); }
+      if (e.key === "ArrowLeft") { idx = (idx - 1 + n) % n; paintMedia(); }
+    });
+    moreBtn.addEventListener("click", () => { shown += PAGE; render(); });
     render(); rerenders.push(render);
   })();
 

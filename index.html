@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
 
@@ -28,6 +28,7 @@
   <nav class="nav" id="nav" aria-label="Main">
     <a href="#story"><span lang="en">Story</span><span lang="bn">গল্প</span></a>
     <a href="#news"><span lang="en">News</span><span lang="bn">খবর</span></a>
+    <a href="#posts"><span lang="en">Updates</span><span lang="bn">আপডেট</span></a>
     <a href="#cold"><span lang="en">Cold map</span><span lang="bn">শীতের মানচিত্র</span></a>
     <a href="#impact"><span lang="en">Your impact</span><span lang="bn">আপনার অবদান</span></a>
     <a href="#ledger"><span lang="en">Transparency</span><span lang="bn">স্বচ্ছতা</span></a>
@@ -135,6 +136,18 @@
   <div class="wrap">
     <h2 class="sec-title"><span lang="en">Films from the gardens</span><span lang="bn">বাগান থেকে ফিল্ম</span></h2>
     <div class="film-grid" id="filmGrid"></div>
+  </div>
+</section>
+
+<!-- ================= POSTS / UPDATES ================= -->
+<section class="posts" id="posts">
+  <div class="wrap">
+    <div class="posts-head">
+      <h2 class="sec-title"><span lang="en">Updates from the field</span><span lang="bn">মাঠ থেকে আপডেট</span></h2>
+      <p class="sec-lead"><span lang="en">Our latest posts, in one place. Tap a post to see it in full.</span><span lang="bn">আমাদের সাম্প্রতিক পোস্টগুলো এক জায়গায়। পুরোটা দেখতে পোস্টে চাপুন।</span></p>
+    </div>
+    <div class="post-grid" id="postGrid"></div>
+    <button class="btn btn-line dark post-more" type="button" id="postMore" hidden><span lang="en">Show more posts</span><span lang="bn">আরও পোস্ট দেখুন</span></button>
   </div>
 </section>
 
@@ -468,9 +481,18 @@
   </div>
 </div>
 
+<div class="modal" id="postModal" hidden>
+  <div class="modal-box post-box" role="dialog" aria-modal="true" aria-label="Post">
+    <button class="modal-x" type="button" data-close aria-label="Close">×</button>
+    <div class="post-media" id="postMedia"></div>
+    <div class="post-body" id="postBody"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="config.js?v=10"></script>
-<script src="script.js?v=10"></script>
+<script src="config.js?v=11"></script>
+<script src="posts.js?v=11"></script>
+<script src="script.js?v=11"></script>
 </body>
 </html>
